@@ -14,9 +14,6 @@ goal = (12.5,0)
 regions = dict()
 pose = [0,0,0]
 
-x = 0
-y = 0
-theta = 0.0
 
 # Function to calculate y value of input argument
 def val(x):
@@ -83,10 +80,6 @@ def control_loop():
     # Setting the rospy refresh rate at 10 Hz
     rate = rospy.Rate(10) 
 
-    global x
-    global y
-    global flag
-    global theta 
     global pose
     global goal
     global regions
