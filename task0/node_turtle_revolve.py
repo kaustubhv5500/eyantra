@@ -18,12 +18,12 @@ def rotate():
     radius = 1
     speed = 1.5
     
-    distance = math.pi*2*radius + 0.43 #Accounting for the size of the turtle
+    distance = math.pi*2*radius + 0.2 #Accounting for the size of the turtle
 
     def pose_callback(msg):
         data = msg.theta
-        string = "Moving in a circle : " + str(arc-0.43)
-    	rospy.loginfo(string)
+        string = "Moving in a circle : " + str(arc)
+        rospy.loginfo(string)
     
     #Setting the angular and linear velocities of the turtle 
     vel_msg.linear.x = speed
@@ -38,6 +38,7 @@ def rotate():
     t0 = float(rospy.Time.now().to_sec())
     global arc
     del_theta = 0
+    rate = rospy.Rate(10)
 
     #Loop to make the turtle revolve
     while(arc< distance):
@@ -45,7 +46,7 @@ def rotate():
         t1=float(rospy.Time.now().to_sec())  
         del_theta = float(speed/radius)*(t1-t0)
         arc = radius*del_theta
-        rospy.Rate(15)
+        rate.sleep()
         #rospy.loginfo(arc)
             
     #After the circle is complete, the turtle is stopped
@@ -59,4 +60,4 @@ if __name__ == '__main__':
     try:
         rotate()
     except rospy.ROSInterruptException: 
-    	pass
+        pass
