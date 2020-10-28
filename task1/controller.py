@@ -56,7 +56,7 @@ def laser_callback(msg):
 def turn_left():
     msg = Twist()
     msg.linear.x = 0
-    msg.angular.z = 0.3
+    msg.angular.z = 0.5 
     return msg
 
 # Function to make the bot follow the conave wall
@@ -65,7 +65,7 @@ def follow_wall():
     
     msg = Twist()
     msg.linear.x = 0.3
-    msg.angular.z = 0.1
+    msg.angular.z = 0.2 
     return msg
 
 # Main control loop function to control the bot
@@ -90,9 +90,9 @@ def control_loop():
     velocity_msg.angular.z = 0
 
     # Declaring constants to help move the bot in the given path
-    n = 9
+    n = 9 
     i = 0
-    P = 2.3
+    P = 2.39 
     d = 1
 
     wp = Waypoints(n)
@@ -118,7 +118,7 @@ def control_loop():
             theta_goal = math.atan2((y2-y1),(x2-x1))
             e_theta = theta_goal - w
 
-            velocity_msg.linear.x = 0.3
+            velocity_msg.linear.x = 0.35 
             velocity_msg.angular.z = P * e_theta
             pub.publish(velocity_msg)
 
@@ -134,12 +134,14 @@ def control_loop():
 
         theta_goal_ = math.atan2((y2_-y1_),(x2_-x1_))
         e_theta_ = theta_goal_ - w_   
+        
 
         # Conditions to navigate the obstacle based on the data from laser callback
 
         if regions['front'] > d and regions['fleft'] > d and regions['fright'] > d:
             # Go to goal algorithm
-            velocity_msg.linear.x = 0.3
+            P = 2.3
+            velocity_msg.linear.x = 0.33
             velocity_msg.angular.z = P * e_theta_
             
         elif regions['front'] < d and regions['fleft'] > d and regions['fright'] > d:

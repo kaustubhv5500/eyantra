@@ -29,7 +29,7 @@
 
 
 <arg name="record" default="true"/>
-<arg name="duration" default="100"/>
+<arg name="duration" default="80"/>
 <arg name="rec_name" default="task1.bag"/>
 
 <group if="$(arg record)">
