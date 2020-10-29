@@ -10,7 +10,7 @@ import numpy as np
 from tf.transformations import euler_from_quaternion
 
 # Declaring global variables
-goal = (12.5,0)
+goal = (12.5,0)   # Defining the goal of the bot
 regions = dict()
 pose = [0,0,0]
 
@@ -99,8 +99,8 @@ def control_loop():
     pub.publish(velocity_msg)
 
 
-    # Loop to make the bot reach the final goal ie. (12.5,0)
-    while pose[0] < 12.5:
+    # Loop to make the bot reach the final goal ie. (12.5,0) in our case
+    while pose[0] < goal[0]:
         
         # Loop to make the bot move in the given sinusoidal path
         while pose[0] < 2*math.pi:
