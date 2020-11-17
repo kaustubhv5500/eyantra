@@ -17,7 +17,7 @@ class MoveBaseSeq():
         # defining the main node and waypoints
         rospy.init_node('move_base_sequence')
         points_seq = [-9.1,-1.2,0,10.7,10.5,0,12.6,-1.9,0,18.2,-1.4,0,-2,4,0]
-        yaweulerangles_seq = [90,30,150,90,180]
+        yaweulerangles_seq = [90,30,90,90,180]
         #yaweulerangles_seq = [90,30,180,90,180]
 
         #List of goal quaternions:
