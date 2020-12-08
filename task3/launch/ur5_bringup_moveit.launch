@@ -1,0 +1,88 @@
+<launch>
+
+<!-- Launch Gazebo  -->
+<!-- <include file="$(find ebot_description)/launch/ur5_test.launch"/> -->
+
+<!-- <include file="$(find ebot_man)/launch/gazebo.launch"/> -->
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="50.0" />
+    <param name="tf_prefix" type="string" value="" />
+  </node>
+
+
+    <rosparam file="$(find ebot_man)/config/joint_state_controller.yaml" command="load"/>
+  <node name="joint_state_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn joint_state_controller" respawn="false" output="screen"/>
+
+
+
+  <rosparam file="$(find ebot_man)/config/trajectory_control.yaml" command="load"/>
+
+  <rosparam file="$(find ebot_man)/config/gripper_control.yaml" command="load"/>
+
+<node name="arm_controller_spawner" pkg="controller_manager" type="controller_manager" 
+  args="spawn arm_controller gripper_controller" respawn="false" output="screen"/>
+
+
+  <include file="$(find ebot_man)/launch/planning_context.launch" >
+    <arg name="load_robot_description" value="false" />
+  </include>
+  
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="/use_gui" value="false"/>
+    <rosparam param="/source_list">[/joint_states]</rosparam>
+  </node>
+
+ 
+
+ <!-- specify the planning pipeline -->
+  <arg name="pipeline" default="ompl" />
+
+  <!-- By default, we do not start a database (it can be large) -->
+  <arg name="db" default="false" />
+  <!-- Allow user to specify database location -->
+  <arg name="db_path" default="$(find ebot_man)/default_warehouse_mongo_db" />
+
+  <!-- By default, we are not in debug mode -->
+  <arg name="debug" default="false" />
+
+  <!-- By default, we will load or override the robot_description -->
+  <arg name="load_robot_description" default="true"/>
+  
+
+ <include file="$(find ebot_man)/launch/move_group.launch">
+    <arg name="allow_trajectory_execution" value="true"/>
+    <arg name="fake_execution" value="false"/>
+    <arg name="info" value="true"/>
+    <arg name="debug" value="$(arg debug)"/>
+    <arg name="pipeline" value="$(arg pipeline)"/>
+    <arg name="load_robot_description" value="$(arg load_robot_description)"/>
+    <remap from="joint_states" to="robot/joint_states"/>
+    
+  </include>
+
+  <arg name="use_rviz" default="true"/>
+
+   <!-- <node pkg="moveit_ros_move_group" type="move_group" name="move_group_remap" output="screen">
+  <remap from="joint_states" to="robot/joint_states"/>
+</node>
+   -->
+<!-- <include file="$(find ebot_man)/launch/moveit_rviz.launch">
+  <arg name="rviz_config" value="$(find ebot_man)/rviz/ur5_test.rviz"/>
+  <arg name="debug" value="false"/>
+  </include> -->
+   
+ <!-- Run Rviz and load the default config to see the state of the move_group node -->
+  <include file="$(find ebot_man)/launch/moveit_rviz.launch" if="$(arg use_rviz)">
+    <arg name="rviz_config" value="$(find ebot_man)/launch/moveit.rviz"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include>
+
+  
+<!-- <node pkg="ebot_man" name="node_eg1_node_print_pose_joint_angles" type="print_pose.py" output="screen" > 
+  </node> -->
+
+<!-- <node pkg="ebot_man" name="node_eg3_set_joint_angles" type="end_go_to_pose.py" output="screen" > 
+  </node> -->
+
+</launch>

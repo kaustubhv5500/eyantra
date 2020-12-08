@@ -1,0 +1,19 @@
+controller_list:
+  - name: fake_robotiq_planning_group_controller
+    type: $(arg execution_type)
+    joints:
+      - shoulder_pan_joint
+      - shoulder_lift_joint
+      - elbow_joint
+      - wrist_1_joint
+      - wrist_2_joint
+      - wrist_3_joint
+  - name: fake_gripper_planning_group_controller
+    type: $(arg execution_type)
+    joints:
+      - gripper_finger1_joint
+initial:  # Define initial robot poses.
+  - group: robotiq_planning_group
+    pose: strainghtUp
+  - group: gripper_planning_group
+    pose: openGripper

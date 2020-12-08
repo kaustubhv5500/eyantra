@@ -1,12 +1,13 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
+import math
 
 fig = plt.figure()
 ax = fig.add_subplot(111)
 
 position_list = pd.read_csv('odom.csv')
-buffer = 0.6
+buffer = 1/math.sqrt(2)
 waypts = [(-9.1,-1.2),(10.7,10.5),(12.6,-1.9),(18.2,-1.4),(-2,4)]
 
 plt.plot(position_list['pose.pose.position.x'],position_list['pose.pose.position.y'])
